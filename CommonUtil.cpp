@@ -7,42 +7,30 @@
 #include <iomanip>
 #include <numeric>
 #include <chrono>
+#include <codecvt>
 
 using namespace std;
 using namespace chrono;
 
 string algorithm::utf8StrToAsciiStr(const char* utf8Str)
 {
-	wstring unicodeStr = utf8StrToUnicodeStr(utf8Str);
-	int strLen = ::WideCharToMultiByte(CP_ACP, 0, unicodeStr.c_str(), unicodeStr.size(), NULL, 0, NULL, NULL);
-	char* str = new char[strLen + 1];
-	::WideCharToMultiByte(CP_ACP, 0, unicodeStr.c_str(), unicodeStr.size(), str, (int)strlen(str), NULL, NULL);
-	string asciiStr(str);
-	// 删除分配的存储空间
-	delete[] str;
-	// 将指针所指向地址置为空
-	str = nullptr;
-	// 返回编码后的字符串
+	size_t i;
+	locale::global(locale("chs"));
+	wstring wstr(L"你好");
+	const wchar_t* _source = wstr.c_str();
+	size_t _dsize = 2 * wstr.size() + 1;
+	char* _dest = new char[_dsize];
+	memset(_dest, 0x0, _dsize);
+	wcstombs_s(&i, _dest, _dsize, _source, _dsize);
+	string result = _dest;
+	delete[] _dest;
 	return asciiStr;
 }
 
 std::wstring algorithm::utf8StrToUnicodeStr(const char * utf8Str)
 {
-	// 预转换，计算所需空间的大小;
-	int wstrLen = ::MultiByteToWideChar(CP_UTF8, NULL, utf8Str, (int)strlen(utf8Str), NULL, 0);
-	// 动态分配字符串存储空间，需要将计算得到的空间大小加1，用于存储 ‘\0’
-	wchar_t* wstr = new wchar_t[wstrLen + 1];
-	// 转换字符串编码
-	::MultiByteToWideChar(CP_UTF8, NULL, utf8Str, (int)strlen(utf8Str), wstr, wstrLen);
-	// 添加字符串结束符
-	wstr[wstrLen] = '\0';
-	// 获取编码后的字符串
-	wstring unicodeStr(wstr);
-	// 删除分配的存储空间
-	delete[] wstr;
-	// 将指针所指向地址置为空
-	wstr = nullptr;
-	return unicodeStr;
+	wstring_convert<codecvt_utf8_utf16<wchar_t>, wchar_t> utf16conv;
+	return utf16conv.from_bytes(utf8Str);
 }
 
 std::string algorithm::getNowDateStr()
