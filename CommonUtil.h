@@ -19,7 +19,7 @@ namespace algorithm {
 	 * @return 转换后的ascii编码字符串
 	 * @since 1.0
 	 */
-	std::string utf8StrToAsciiStr(const char* utf8Str);
+	std::string wstringToString(const char* utf8Str);
 		
 	/**
 	 *	@brief UTF-8编码字符串转换成unicode编码字符串

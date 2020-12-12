@@ -11,11 +11,10 @@
 using namespace std;
 using namespace chrono;
 
-string algorithm::utf8StrToAsciiStr(const char* utf8Str)
+string algorithm::wstringToString(const char* utf8Str)
 {
-	size_t i;
 	locale::global(locale("chs"));
-	wstring wstr(L"你好");
+	wstring wstr = utf8StrToUnicodeStr(utf8Str);
 	const wchar_t* _source = wstr.c_str();
 	size_t _dsize = 2 * wstr.size() + 1;
 	char* _dest = new char[_dsize];
