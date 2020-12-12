@@ -1,5 +1,5 @@
-﻿#pragma once
-#include "pch.h"
+﻿#ifndef COMMONUTIL_COMMONUTIL_H
+#define COMMONUTIL_COMMONUTIL_H
 
 #include <string>
 
@@ -104,3 +104,5 @@ namespace algorithm {
 
 	//std::string formatStr(const char* format, ...);
 }
+
+#endif

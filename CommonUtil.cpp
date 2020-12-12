@@ -1,7 +1,6 @@
-﻿#include "pch.h"
+﻿#include "CommonUtil.h"
 
-#include "CommonUtil.h"
-
+#include <cstdlib>
 #include <sstream>
 #include <string>
 #include <iomanip>
@@ -21,10 +20,10 @@ string algorithm::utf8StrToAsciiStr(const char* utf8Str)
 	size_t _dsize = 2 * wstr.size() + 1;
 	char* _dest = new char[_dsize];
 	memset(_dest, 0x0, _dsize);
-	wcstombs_s(&i, _dest, _dsize, _source, _dsize);
+	wcstombs(_dest, _source, _dsize);
 	string result = _dest;
 	delete[] _dest;
-	return asciiStr;
+	return result;
 }
 
 std::wstring algorithm::utf8StrToUnicodeStr(const char * utf8Str)
